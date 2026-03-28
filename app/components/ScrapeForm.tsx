@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import TagInput from './TagInput'
 
 interface Recipe {
   title: string
@@ -19,12 +20,14 @@ export default function ScrapeForm() {
   const [error, setError] = useState<string | null>(null)
   const [saveMessage, setSaveMessage] = useState<string | null>(null)
   const [recipe, setRecipe] = useState<Recipe | null>(null)
+  const [tags, setTags] = useState<string[]>([])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
     setRecipe(null)
     setSaveMessage(null)
+    setTags([])
     setLoading(true)
 
     try {
@@ -58,6 +61,7 @@ export default function ScrapeForm() {
       steps: recipe.steps,
       image_url: recipe.imageUrl,
       source_url: recipe.sourceUrl,
+      tags,
     })
 
     if (dbError) {
@@ -148,7 +152,12 @@ export default function ScrapeForm() {
             </div>
           )}
 
-          <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center gap-3">
+          <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800">
+            <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">タグ（任意）</p>
+            <TagInput tags={tags} onChange={setTags} />
+          </div>
+
+          <div className="flex items-center gap-3">
             <button
               onClick={handleSave}
               disabled={saving}

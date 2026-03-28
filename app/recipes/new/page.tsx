@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import TagInput from '@/app/components/TagInput'
 
 export default function NewRecipePage() {
   const router = useRouter()
@@ -13,6 +14,7 @@ export default function NewRecipePage() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [sourceUrl, setSourceUrl] = useState('')
+  const [tags, setTags] = useState<string[]>([])
   const [ingredients, setIngredients] = useState<string[]>([''])
   const [steps, setSteps] = useState<string[]>([''])
 
@@ -35,6 +37,7 @@ export default function NewRecipePage() {
       source_url: sourceUrl || null,
       ingredients: ingredients.filter((s) => s.trim()),
       steps: steps.filter((s) => s.trim()),
+      tags,
     })
 
     if (dbError) {
@@ -100,6 +103,12 @@ export default function NewRecipePage() {
               placeholder="https://..."
               className="w-full rounded-lg border border-zinc-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
             />
+          </div>
+
+          {/* タグ */}
+          <div>
+            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">タグ</label>
+            <TagInput tags={tags} onChange={setTags} />
           </div>
 
           {/* 材料 */}

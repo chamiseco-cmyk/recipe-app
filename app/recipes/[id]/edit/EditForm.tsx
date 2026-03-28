@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import TagInput from '@/app/components/TagInput'
 
 interface Recipe {
   id: string
@@ -12,6 +13,7 @@ interface Recipe {
   source_url: string | null
   ingredients: string[]
   steps: string[]
+  tags: string[]
 }
 
 export default function EditForm({ recipe }: { recipe: Recipe }) {
@@ -22,6 +24,7 @@ export default function EditForm({ recipe }: { recipe: Recipe }) {
   const [title, setTitle] = useState(recipe.title)
   const [description, setDescription] = useState(recipe.description ?? '')
   const [sourceUrl, setSourceUrl] = useState(recipe.source_url ?? '')
+  const [tags, setTags] = useState<string[]>(recipe.tags ?? [])
   const [ingredients, setIngredients] = useState<string[]>(recipe.ingredients?.length ? recipe.ingredients : [''])
   const [steps, setSteps] = useState<string[]>(recipe.steps?.length ? recipe.steps : [''])
 
@@ -44,6 +47,7 @@ export default function EditForm({ recipe }: { recipe: Recipe }) {
         title,
         description: description || null,
         source_url: sourceUrl || null,
+        tags,
         ingredients: ingredients.filter((s) => s.trim()),
         steps: steps.filter((s) => s.trim()),
       })
@@ -96,6 +100,11 @@ export default function EditForm({ recipe }: { recipe: Recipe }) {
               rows={2}
               className="w-full rounded-lg border border-zinc-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">タグ</label>
+            <TagInput tags={tags} onChange={setTags} />
           </div>
 
           <div>

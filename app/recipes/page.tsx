@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 export default async function RecipesPage() {
   const { data: recipes, error } = await supabase
     .from('recipes')
-    .select('id, title, description, image_url, source_url, created_at')
+    .select('id, title, description, image_url, source_url, created_at, tags')
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -32,6 +32,12 @@ export default async function RecipesPage() {
               className="text-sm text-zinc-500 hover:text-orange-500 transition-colors"
             >
               手動登録
+            </Link>
+            <Link
+              href="/recipes/crawl"
+              className="text-sm text-zinc-500 hover:text-orange-500 transition-colors"
+            >
+              一括収集
             </Link>
             <Link
               href="/"

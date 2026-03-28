@@ -11,6 +11,7 @@ interface Recipe {
   image_url: string | null
   source_url: string | null
   created_at: string
+  tags: string[]
 }
 
 export default function RecipeCard({ recipe, onDelete }: { recipe: Recipe; onDelete: (id: string) => void }) {
@@ -44,6 +45,15 @@ export default function RecipeCard({ recipe, onDelete }: { recipe: Recipe; onDel
         </h3>
         {recipe.description && (
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">{recipe.description}</p>
+        )}
+        {recipe.tags?.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-1">
+            {recipe.tags.map((tag) => (
+              <span key={tag} className="rounded-full bg-orange-100 px-2 py-0.5 text-xs text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
+                {tag}
+              </span>
+            ))}
+          </div>
         )}
         <div className="mt-3 flex items-center justify-between">
           <span className="text-xs text-zinc-400">

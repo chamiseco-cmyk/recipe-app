@@ -55,6 +55,15 @@ export default async function RecipeDetailPage({
           {recipe.description && (
             <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{recipe.description}</p>
           )}
+          {recipe.tags?.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {recipe.tags.map((tag: string) => (
+                <span key={tag} className="rounded-full bg-orange-100 px-3 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="mt-2 flex items-center gap-4">
             {recipe.source_url && (
               <a
